@@ -1,0 +1,767 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Khóa học Toán";
+
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathMaster - Nền tảng học Toán Lớp 12</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <style>
+        :root {
+            --primary: #1e40af;
+        }
+
+        body {
+            font-family: 'Poppins', system-ui, sans-serif;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .math-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+            .math-card:hover {
+                transform: translateY(-10px) scale(1.03);
+                box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            }
+
+        .nav-link {
+            position: relative;
+        }
+
+            .nav-link:after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: -2px;
+                left: 0;
+                background-color: #f59e0b;
+                transition: width 0.3s ease;
+            }
+
+            .nav-link:hover:after {
+                width: 100%;
+            }
+
+        .section-title {
+            position: relative;
+            display: inline-block;
+        }
+
+            .section-title:after {
+                content: '';
+                position: absolute;
+                width: 60px;
+                height: 3px;
+                background: linear-gradient(to right, #1e40af, #f59e0b);
+                bottom: -6px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- HEADER -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-blue-700 text-white rounded-2xl flex items-center justify-center text-3xl font-bold shadow-inner">π</div>
+                <div>
+                    <span class="text-3xl font-bold text-blue-700 tracking-tighter">Math</span>
+                    <span class="text-3xl font-bold text-orange-500 tracking-tighter">Master</span>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center gap-8 text-lg font-medium">
+                    <a href="/" class="nav-link text-gray-700 hover:text-blue-700">Trang chủ</a>
+                    <a asp-page="/KhoaHoc" class="nav-link text-gray-700 hover:text-blue-700">Khóa học</a>
+                    <a asp-page="/TaiLieu" class="nav-link text-gray-700 hover:text-blue-700">Tài liệu</a>
+                    <a href="#news" class="nav-link text-gray-700 hover:text-blue-700">Tin tức</a>
+                    <a href="#contact" class="nav-link text-gray-700 hover:text-blue-700">Liên hệ</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <button onclick="showLoginModal()" class="px-6 py-2.5 text-sm font-semibold text-blue-700 border-2 border-blue-700 rounded-3xl hover:bg-blue-50 transition">
+                    Đăng nhập
+                </button>
+                <button onclick="window.location.href='#courses'" class="px-8 py-2.5 bg-gradient-to-r from-blue-700 to-orange-500 text-white text-sm font-semibold rounded-3xl hover:shadow-xl transition shadow-md">
+                    Đăng ký học ngay
+                </button>
+                <button id="mobile-menu-btn" class="md:hidden text-3xl text-blue-700">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="flex flex-col px-6 py-6 gap-5 text-lg font-medium">
+                <a href="/" class="py-2">Trang chủ</a>
+                <a href="/KhoaHoc" class="py-2">Khóa học</a>
+                <a href="/TaiLieu" class="py-2">Tài liệu</a>
+                <a href="#news" class="py-2">Tin tức</a>
+                <a href="#contact" class="py-2">Liên hệ</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="relative h-screen overflow-hidden bg-blue-900">
+        <div class="swiper hero-swiper h-full">
+            <div class="swiper-wrapper">
+
+                <!-- Slide 1 -->
+                <div class="swiper-slide relative">
+                    <img src="/images/slide1.jpg"
+                         alt="Toán lớp 12 MathMaster"
+                         class="w-full h-full object-cover">
+                    <!-- Overlay tối để chữ dễ đọc -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="swiper-slide relative">
+                    <img src="~/images/slide2.jpg"
+                         alt="Học Toán lớp 12 cùng giảng viên Tiến sĩ"
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="swiper-slide relative">
+                    <img src="~/images/slide3.jpg"
+                         alt="Ôn thi THPT Quốc gia 2026 - Toán lớp 12"
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
+                </div>
+
+            </div>
+
+       
+
+            <!-- Phân trang (chấm) -->
+            <div class="swiper-pagination"></div>
+        </div>
+
+        <!-- Nội dung chữ overlay -->
+        <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+            <div class="max-w-5xl mx-auto px-6 text-center text-white pointer-events-auto">
+                <h1 class="text-4xl md:text-6xl lg:text-6xl font-bold leading-tight drop-shadow-2xl tracking-tight">
+                    TOÁN LỚP 12 <br>
+                    CHỈ CÒN 1 BƯỚC ĐẾN ĐẠI HỌC
+                </h1>
+
+                <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-10 text-blue-100 mt-8 leading-relaxed">
+                    Học tập cùng giảng viên Tiến sĩ, giải bài tập chi tiết, đề thi thử THPT Quốc gia 2026.<br>
+                    Hơn 10.000 học sinh đã đạt điểm 9+ nhờ MathMaster.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-5 justify-center">
+                    <a href="#courses"
+                       class="px-10 py-5 bg-white text-blue-700 font-semibold text-lg rounded-3xl hover:bg-orange-400 hover:text-white transition flex items-center justify-center gap-3 shadow-2xl hover:shadow-3xl">
+                        <i class="fa-solid fa-book"></i>
+                        XEM CHƯƠNG TRÌNH HỌC
+                    </a>
+                    <a href="#resources"
+                       class="px-10 py-5 border-2 border-white text-white font-semibold text-lg rounded-3xl hover:bg-white hover:text-blue-700 transition flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-download"></i>
+                        TẢI TÀI LIỆU MIỄN PHÍ
+                    </a>
+                </div>
+
+                <!-- Thống kê nhỏ -->
+                <div class="mt-16 flex flex-wrap justify-center gap-8 text-sm">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-medal text-orange-400 text-3xl"></i>
+                        <div>
+                            <div class="font-bold text-2xl">500+</div>
+                            <div class="text-blue-200 text-xs">Bài giảng video</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-users text-orange-400 text-3xl"></i>
+                        <div>
+                            <div class="font-bold text-2xl">10.000+</div>
+                            <div class="text-blue-200 text-xs">Bài tập đã giải</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-trophy text-orange-400 text-3xl"></i>
+                        <div>
+                            <div class="font-bold text-2xl">200+</div>
+                            <div class="text-blue-200 text-xs">Học sinh đạt giải</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GIỚI THIỆU -->
+    <section id="about" class="py-12 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <span class="px-5 py-2 bg-orange-100 text-orange-600 text-sm font-semibold rounded-3xl">TOÁN LỚP 12 CHUẨN THPT QUỐC GIA</span>
+                    <h2 class="section-title text-5xl font-bold text-blue-900 mt-6 mb-8">
+                        Toán học – Nền tảng của tương lai
+                    </h2>
+                    <div class="prose text-lg text-gray-600 leading-relaxed">
+                        <p>MathMaster là nền tảng học Toán trực tuyến chất lượng cao dành riêng cho học sinh lớp 12. Với đội ngũ giảng viên là Tiến sĩ, Thạc sĩ từ các trường Đại học hàng đầu, chúng tôi giúp các em nắm vững kiến thức từ cơ bản đến nâng cao, ôn thi THPT Quốc gia hiệu quả nhất.</p>
+                        <p>Không chỉ lý thuyết suông, mỗi bài giảng đều đi kèm bài tập thực hành, video giải chi tiết và đề thi thử theo đúng cấu trúc 2026.</p>
+                    </div>
+
+                    <div class="mt-10 grid grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="text-5xl font-bold text-blue-700">98%</div>
+                            <div class="text-sm text-gray-500 mt-1">Học sinh hài lòng</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-5xl font-bold text-orange-500">9.2</div>
+                            <div class="text-sm text-gray-500 mt-1">Điểm trung bình</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-5xl font-bold text-blue-700">24/7</div>
+                            <div class="text-sm text-gray-500 mt-1">Hỗ trợ trực tiếp</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/800x600/?teacher-math"
+                         class="rounded-3xl shadow-2xl" alt="Giảng viên">
+                    <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-3xl shadow-xl">
+                        <div class="flex gap-4">
+                            <div class="text-6xl font-black text-orange-400">9+</div>
+                            <div>
+                                <div class="font-semibold">Điểm thi THPT</div>
+                                <div class="text-sm text-gray-500">Học sinh của chúng tôi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHƯƠNG TRÌNH HỌC -->
+    <section id="courses" class="py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-orange-500 font-semibold">CHƯƠNG TRÌNH HỌC CHI TIẾT</span>
+                <h2 class="section-title text-5xl font-bold text-blue-900 mt-3">Các chủ đề Toán Lớp 12</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 items-stretch">
+                <!-- Card 1 -->
+                <div class="math-card bg-white rounded-3xl overflow-hidden shadow flex flex-col h-full">
+                    <div class="h-48 bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center">
+                        <i class="fa-solid fa-function text-white text-8xl opacity-20"></i>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <h3 class="font-bold text-2xl mb-2">Hàm số & Đồ thị</h3>
+                        <p class="text-gray-600">Hàm lượng giác, hàm mũ, lôgarit, cực trị, đồ thị.</p>
+                        <button onclick="alert('Đang mở chi tiết hàm số...')"
+                                class="mt-auto w-full py-4 bg-blue-700 text-white font-semibold rounded-2xl hover:bg-blue-800 transition">
+                            Học ngay
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="math-card bg-white rounded-3xl overflow-hidden shadow flex flex-col h-full">
+                    <div class="h-48 bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center">
+                        <i class="fa-solid fa-square-root-variable text-white text-8xl opacity-20"></i>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <h3 class="font-bold text-2xl mb-2">Giải tích (Đạo hàm & Tích phân)</h3>
+                        <p class="text-gray-600">Giới hạn, đạo hàm, ứng dụng, nguyên hàm, tích phân.</p>
+                        <button onclick="alert('Đang mở chi tiết giải tích...')"
+                                class="mt-auto w-full py-4 bg-blue-700 text-white font-semibold rounded-2xl hover:bg-orange-600 transition">
+                            Học ngay
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="math-card bg-white rounded-3xl overflow-hidden shadow flex flex-col h-full">
+                    <div class="h-48 bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center">
+                        <i class="fa-solid fa-shapes text-white text-8xl opacity-20"></i>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <h3 class="font-bold text-2xl mb-2">Hình học không gian</h3>
+                        <p class="text-gray-600">Mặt cầu, mặt trụ, khối đa diện, tọa độ không gian.</p>
+                        <button onclick="alert('Đang mở chi tiết hình học...')"
+                                class="mt-auto w-full py-4 bg-blue-700 text-white font-semibold rounded-2xl hover:bg-emerald-700 transition">
+                            Học ngay
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="#" onclick="alert('Toàn bộ chương trình học đang được mở rộng...')"
+                   class="inline-flex items-center gap-3 text-blue-700 font-semibold text-lg">
+                    XEM TOÀN BỘ 12 CHỦ ĐỀ
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- GIẢNG VIÊN -->
+    <section id="teachers" class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-orange-500 font-semibold">ĐỘI NGŨ CHUYÊN GIA</span>
+                <h2 class="section-title text-5xl font-bold text-blue-900 mt-3">Giảng viên của chúng tôi</h2>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- GV 1 -->
+                <div class="group text-center">
+                    <div class="relative mx-auto w-56 h-56 overflow-hidden rounded-3xl shadow-xl">
+                        <img src="https://source.unsplash.com/random/400x400/?male-teacher" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="TS. Nguyễn Văn A">
+                    </div>
+                    <div class="mt-6">
+                        <div class="font-bold text-xl">TS. Nguyễn Văn A</div>
+                        <div class="text-orange-500">Chuyên Giải tích & Ứng dụng</div>
+                        <div class="text-sm text-gray-500 mt-1">Giảng viên ĐH Bách Khoa Hà Nội • 15 năm kinh nghiệm</div>
+                    </div>
+                </div>
+
+                <!-- GV 2 -->
+                <div class="group text-center">
+                    <div class="relative mx-auto w-56 h-56 overflow-hidden rounded-3xl shadow-xl">
+                        <img src="https://source.unsplash.com/random/400x400/?female-teacher" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="ThS. Trần Thị B">
+                    </div>
+                    <div class="mt-6">
+                        <div class="font-bold text-xl">ThS. Trần Thị Bích</div>
+                        <div class="text-orange-500">Chuyên Hình học không gian</div>
+                        <div class="text-sm text-gray-500 mt-1">Giảng viên THPT Chuyên Hà Nội - Amsterdam</div>
+                    </div>
+                </div>
+
+                <!-- GV 3 -->
+                <div class="group text-center">
+                    <div class="relative mx-auto w-56 h-56 overflow-hidden rounded-3xl shadow-xl">
+                        <img src="https://source.unsplash.com/random/400x400/?math-professor" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="TS. Lê Minh C">
+                    </div>
+                    <div class="mt-6">
+                        <div class="font-bold text-xl">TS. Lê Minh Cường</div>
+                        <div class="text-orange-500">Chuyên Xác suất & Thống kê</div>
+                        <div class="text-sm text-gray-500 mt-1">Tác giả sách ôn thi THPT Quốc gia</div>
+                    </div>
+                </div>
+
+                <!-- GV 4 -->
+                <div class="group text-center">
+                    <div class="relative mx-auto w-56 h-56 overflow-hidden rounded-3xl shadow-xl">
+                        <img src="https://source.unsplash.com/random/400x400/?vietnam-teacher" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="ThS. Phạm Thị D">
+                    </div>
+                    <div class="mt-6">
+                        <div class="font-bold text-xl">ThS. Phạm Thị Dung</div>
+                        <div class="text-orange-500">Chuyên Hàm số lượng giác</div>
+                        <div class="text-sm text-gray-500 mt-1">Hơn 8.000 học sinh đạt 9+ Toán</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TÀI LIỆU -->
+    <section id="resources" class="py-12 bg-gradient-to-b from-gray-50 to-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="section-title text-5xl font-bold text-blue-900">Tài liệu & Bài giảng</h2>
+                <p class="mt-4 text-gray-600 max-w-md mx-auto">Tất cả đều miễn phí tải về hoặc xem trực tuyến</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Accordion -->
+                <div class="space-y-4">
+                    <details class="group bg-white rounded-3xl shadow p-6 open">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-xl">
+                            <span class="flex items-center gap-4">
+                                <i class="fa-solid fa-file-pdf text-red-500"></i>
+                                Lý thuyết Toán Lớp 12 (PDF 120 trang)
+                            </span>
+                            <i class="fa-solid fa-chevron-down transition group-open:rotate-180"></i>
+                        </summary>
+                        <div class="mt-6 pl-10 text-gray-600">
+                            Tài liệu tổng hợp đầy đủ 12 chương theo chương trình Bộ GD&ĐT. Có công thức LaTeX và ví dụ minh họa.
+                            <a href="#" onclick="alert('Đang tải file PDF... (demo)')"
+                               class="block mt-6 text-blue-600 font-medium flex items-center gap-2">
+                                <i class="fa-solid fa-download"></i> Tải ngay (25MB)
+                            </a>
+                        </div>
+                    </details>
+
+                    <details class="group bg-white rounded-3xl shadow p-6">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-xl">
+                            <span class="flex items-center gap-4">
+                                <i class="fa-solid fa-video text-blue-600"></i>
+                                50 Video giải bài tập nâng cao
+                            </span>
+                            <i class="fa-solid fa-chevron-down transition group-open:rotate-180"></i>
+                        </summary>
+                        <div class="mt-6 pl-10">
+                            <iframe width="100%" height="240" src="https://www.youtube.com/embed/dQw4w9wgccc"
+                                    title="YouTube video player" frameborder="0" allowfullscreen class="rounded-2xl"></iframe>
+                        </div>
+                    </details>
+                </div>
+
+                <div>
+                    <div class="bg-white rounded-3xl p-8 shadow h-full">
+                        <h3 class="font-bold text-2xl mb-6">Đề thi thử THPT Quốc gia 2026</h3>
+                        <ul class="space-y-4">
+                            <li class="flex justify-between items-center border-b pb-4">
+                                <span>Đề thi thử lần 1 - Tháng 3/2026</span>
+                                <button onclick="alert('Đang tải đề thi...')" class="text-orange-500 font-medium text-sm">Tải PDF</button>
+                            </li>
+                            <li class="flex justify-between items-center border-b pb-4">
+                                <span>Đề thi thử lần 2 - Tháng 4/2026</span>
+                                <button onclick="alert('Đang tải đề thi...')" class="text-orange-500 font-medium text-sm">Tải PDF</button>
+                            </li>
+                            <li class="flex justify-between items-center">
+                                <span>Bộ 10 đề thi thử cuối cùng</span>
+                                <button onclick="alert('Đang tải bộ đề...')" class="text-orange-500 font-medium text-sm">Tải PDF</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TIN TỨC -->
+    <section id="news" class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="section-title text-5xl font-bold text-center text-blue-900 mb-12">Tin tức & Sự kiện</h2>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 rounded-3xl overflow-hidden">
+                    <img src="https://source.unsplash.com/random/600x400/?math-competition" class="w-full h-56 object-cover">
+                    <div class="p-8">
+                        <div class="text-xs text-orange-500 font-medium">15/03/2026</div>
+                        <h4 class="font-semibold text-xl mt-3">Kết quả cuộc thi Toán quốc tế IMO 2026 – Việt Nam xếp hạng 3</h4>
+                        <p class="text-gray-600 mt-4 line-clamp-3">Học sinh lớp 12 của MathMaster đã xuất sắc giành Huy chương Bạc...</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-3xl overflow-hidden">
+                    <img src="https://source.unsplash.com/random/600x400/?seminar-math" class="w-full h-56 object-cover">
+                    <div class="p-8">
+                        <div class="text-xs text-orange-500 font-medium">01/03/2026</div>
+                        <h4 class="font-semibold text-xl mt-3">Seminar trực tuyến: “Đạo hàm và ứng dụng thực tế”</h4>
+                        <p class="text-gray-600 mt-4 line-clamp-3">Với TS. Nguyễn Văn A – 2000 học sinh đã tham gia...</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-3xl overflow-hidden">
+                    <img src="https://source.unsplash.com/random/600x400/?student-award" class="w-full h-56 object-cover">
+                    <div class="p-8">
+                        <div class="text-xs text-orange-500 font-medium">20/02/2026</div>
+                        <h4 class="font-semibold text-xl mt-3">Học sinh MathMaster đạt 10 điểm Toán THPT</h4>
+                        <p class="text-gray-600 mt-4 line-clamp-3">Em Nguyễn Thị H - lớp 12A1 trường THPT Chuyên...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ý KIẾN HỌC VIÊN -->
+    <section class="py-12 bg-gradient-to-b from-blue-900 to-blue-800 text-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-5xl font-bold text-center mb-12">Học viên nói gì về chúng tôi</h2>
+
+            <!-- Swiper -->
+            <div class="swiper testimonial-swiper">
+                <div class="swiper-wrapper">
+                    <!-- Slide 1 -->
+                    <div class="swiper-slide bg-white/10 backdrop-blur-xl p-8 rounded-3xl">
+                        <div class="flex gap-4">
+                            <img src="https://source.unsplash.com/random/100x100/?student-girl" class="w-12 h-12 rounded-2xl">
+                            <div>
+                                <div class="font-semibold">Nguyễn Thị Lan Anh</div>
+                                <div class="text-xs text-blue-200">Lớp 12A1 - THPT Chuyên Khoa Học Tự Nhiên</div>
+                            </div>
+                        </div>
+                        <p class="mt-8 italic">"Nhờ video giải chi tiết của thầy A mà em hiểu rõ đạo hàm chỉ trong 2 tuần. Điểm Toán từ 6.5 lên 9.5!"</p>
+                        <div class="text-orange-400 mt-6">★★★★★</div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="swiper-slide bg-white/10 backdrop-blur-xl p-8 rounded-3xl">
+                        <div class="flex gap-4">
+                            <img src="https://source.unsplash.com/random/100x100/?student-boy" class="w-12 h-12 rounded-2xl">
+                            <div>
+                                <div class="font-semibold">Trần Minh Quân</div>
+                                <div class="text-xs text-blue-200">Lớp 12 - THPT Lê Hồng Phong</div>
+                            </div>
+                        </div>
+                        <p class="mt-8 italic">"Tài liệu PDF rất rõ ràng, có cả lời giải chi tiết. Em thi thử đạt 9.8 điểm. Cảm ơn MathMaster!"</p>
+                        <div class="text-orange-400 mt-6">★★★★☆</div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="swiper-pagination mt-10"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIÊN HỆ -->
+    <section id="contact" class="py-12 bg-white">
+        <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16">
+            <div>
+                <h2 class="text-5xl font-bold text-blue-900">Liên hệ với chúng tôi</h2>
+                <p class="mt-6 text-lg text-gray-600">Bạn có câu hỏi về chương trình học hoặc muốn tư vấn lộ trình ôn thi THPT Quốc gia? Hãy để lại thông tin, đội ngũ hỗ trợ của MathMaster sẽ liên hệ trong vòng 30 phút.</p>
+
+                <form id="contact-form" class="mt-10 space-y-6" onsubmit="handleSubmit(event)">
+                    <div class="grid grid-cols-2 gap-6">
+                        <input type="text" placeholder="Họ và tên" required class="w-full px-6 py-5 rounded-3xl border border-gray-200 focus:outline-none focus:border-blue-600">
+                        <input type="email" placeholder="Email" required class="w-full px-6 py-5 rounded-3xl border border-gray-200 focus:outline-none focus:border-blue-600">
+                    </div>
+                    <input type="tel" placeholder="Số điện thoại / Zalo" class="w-full px-6 py-5 rounded-3xl border border-gray-200 focus:outline-none focus:border-blue-600">
+                    <textarea placeholder="Nội dung tin nhắn..." rows="5" class="w-full px-6 py-5 rounded-3xl border border-gray-200 focus:outline-none focus:border-blue-600"></textarea>
+
+                    <button type="submit"
+                            class="w-full py-6 bg-gradient-to-r from-blue-700 to-orange-500 text-white font-bold text-xl rounded-3xl hover:brightness-110 transition">
+                        GỬI THÔNG TIN
+                    </button>
+                </form>
+            </div>
+
+            <div class="space-y-8">
+                <div class="flex gap-6">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-700 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div>
+                        <div class="font-medium text-lg">Hotline / Zalo</div>
+                        <a href="tel:0987654321" class="text-3xl font-semibold text-blue-700">0987 654 321</a>
+                    </div>
+                </div>
+
+                <div class="flex gap-6">
+                    <div class="w-14 h-14 bg-orange-100 text-orange-500 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div>
+                        <div class="font-medium text-lg">Email hỗ trợ</div>
+                        <a href="mailto:support@mathmaster.edu.vn" class="text-xl text-gray-600">support@mathmaster.edu.vn</a>
+                    </div>
+                </div>
+
+                <div class="flex gap-6">
+                    <div class="w-14 h-14 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
+                        <i class="fa-brands fa-facebook"></i>
+                    </div>
+                    <div>
+                        <div class="font-medium text-lg">Fanpage Facebook</div>
+                        <a href="#" class="text-xl text-blue-700">facebook.com/mathmastervn</a>
+                    </div>
+                </div>
+
+                <div class="mt-12">
+                    <div class="text-sm text-gray-500 mb-3">HOẶC</div>
+                    <div class="bg-gray-100 p-8 rounded-3xl text-center">
+                        <div class="text-2xl font-semibold">Địa chỉ học trực tiếp</div>
+                        <div class="text-gray-600 mt-2">Số 123 Đường ABC, Quận Cầu Giấy, Hà Nội</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-blue-950 text-white py-16">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-10">
+            <div>
+                <div class="flex items-center gap-3 text-white">
+                    <div class="w-10 h-10 bg-white text-blue-950 rounded-2xl flex items-center justify-center text-4xl font-bold">π</div>
+                    <div class="text-3xl font-bold">MathMaster</div>
+                </div>
+                <p class="mt-6 text-blue-200 text-sm leading-relaxed">
+                    Nền tảng học Toán Lớp 12 trực tuyến chất lượng cao.<br>
+                    Đồng hành cùng hơn 10.000 học sinh Việt Nam.
+                </p>
+                <div class="flex gap-5 mt-8">
+                    <i class="fa-brands fa-facebook text-3xl hover:text-orange-400 cursor-pointer"></i>
+                    <i class="fa-brands fa-youtube text-3xl hover:text-orange-400 cursor-pointer"></i>
+                    <i class="fa-brands fa-tiktok text-3xl hover:text-orange-400 cursor-pointer"></i>
+                </div>
+            </div>
+
+            <div>
+                <div class="font-semibold text-lg mb-6">Liên kết nhanh</div>
+                <ul class="space-y-3 text-blue-200">
+                    <li><a href="#courses" class="hover:text-white">Chương trình học</a></li>
+                    <li><a href="#resources" class="hover:text-white">Tài liệu miễn phí</a></li>
+                    <li><a href="#teachers" class="hover:text-white">Giảng viên</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <div class="font-semibold text-lg mb-6">Chương trình học</div>
+                <ul class="space-y-3 text-blue-200">
+                    <li>Hàm số & Giải tích</li>
+                    <li>Hình học không gian</li>
+                    <li>Xác suất - Thống kê</li>
+                    <li>Đề thi thử THPT</li>
+                </ul>
+            </div>
+
+            <div>
+                <div class="font-semibold text-lg mb-6">Liên hệ</div>
+                <div class="text-sm text-blue-200 space-y-2">
+                    <div>Hotline: 0987 654 321</div>
+                    <div>Email: info@mathmaster.edu.vn</div>
+                    <div>Hà Nội • TP.HCM • Đà Nẵng</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center text-blue-300 text-xs mt-16">
+            © 2026 MathMaster - Nền tảng học Toán Lớp 12. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- LOGIN MODAL -->
+    <div id="login-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[999]">
+        <div class="bg-white rounded-3xl max-w-md w-full mx-4 overflow-hidden">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-8">
+                    <div class="text-2xl font-bold text-blue-700">Đăng nhập</div>
+                    <button onclick="hideLoginModal()" class="text-3xl text-gray-400 hover:text-gray-600">×</button>
+                </div>
+                <input type="email" placeholder="Email hoặc số điện thoại" class="w-full px-6 py-5 rounded-3xl border mb-5 focus:outline-none focus:border-blue-600">
+                <input type="password" placeholder="Mật khẩu" class="w-full px-6 py-5 rounded-3xl border mb-8 focus:outline-none focus:border-blue-600">
+                <button onclick="fakeLogin()" class="w-full py-5 bg-blue-700 text-white font-bold text-lg rounded-3xl">
+                    Đăng nhập
+                </button>
+                <div class="text-center text-sm text-gray-500 mt-6">
+                    Chưa có tài khoản?
+                    <span onclick="hideLoginModal();alert('Chức năng đăng ký đang phát triển...')" class="text-blue-600 font-medium cursor-pointer">Đăng ký ngay</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileBtn && mobileMenu) {
+            mobileBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                const icon = mobileBtn.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-xmark');
+                }
+            });
+        }
+
+        // Login modal
+        window.showLoginModal = function() {
+            const modal = document.getElementById('login-modal');
+            if (modal) modal.classList.replace('hidden', 'flex');
+        };
+        window.hideLoginModal = function() {
+            const modal = document.getElementById('login-modal');
+            if (modal) modal.classList.replace('flex', 'hidden');
+        };
+        window.fakeLogin = function() {
+            alert('Đăng nhập thành công! (Demo)');
+            hideLoginModal();
+        };
+
+        // Contact form
+        window.handleSubmit = function(e) {
+            e.preventDefault();
+            alert('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất.');
+            e.target.reset();
+        };
+
+        // Swiper Hero Slider
+        function initHeroSwiper() {
+            new Swiper('.hero-swiper', {
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                speed: 900,
+                effect: 'fade',
+                fadeEffect: { crossFade: true },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                observer: true,
+                observeParents: true,
+            });
+        }
+
+        // Swiper Testimonial
+        function initTestimonialSwiper() {
+            new Swiper('.testimonial-swiper', {
+                loop: true,
+                autoplay: { delay: 4000 },
+                pagination: { el: '.swiper-pagination', clickable: true },
+                observer: true,
+                observeParents: true,
+            });
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") hideLoginModal();
+        });
+
+        // Khởi tạo khi trang load
+              window.onload = function () {
+            initHeroSwiper();
+            initTestimonialSwiper();
+
+            const firstDetail = document.querySelector('details');
+            if (firstDetail) firstDetail.setAttribute('open', true);
+
+            console.log('✅ Slider đã chạy!');
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+﻿html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    font-family: 'Poppins', sans-serif;
+}
+html, body, * {
+    font-family: 'Poppins', sans-serif !important;
+}
+/* KHUNG TRÁI */
+.sidebar-box {
+    background: #f5f6f8;
+    padding: 25px 20px; /* giảm khoảng trắng */
+    border-radius: 12px;
+}
+
+    /* TIÊU ĐỀ */
+    .sidebar-box h2 {
+        font-size: 26px; /* to hơn */
+        font-weight: 700;
+        margin-bottom: 15px;
+        line-height: 1.4;
+    }
+
+/* NÚT CAM */
+.btn-main {
+    display: block;
+    background: #f68b2c;
+    color: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 15px;
+    text-decoration: none;
+}
+
+/* LINK */
+.sidebar-box a {
+    display: block;
+    font-size: 17px; /* to hơn */
+    margin-bottom: 8px;
+    color: #333;
+    text-decoration: none;
+}
+
+    .sidebar-box a:hover {
+        color: #f68b2c;
+    }
+
+/* ĐƯỜNG NGĂN */
+.sidebar-box hr {
+    margin: 15px 0;
+}
+
+/* CHƯƠNG */
+.sidebar-box h3 {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+/* KHUNG PHẢI */
+.content-box {
+    padding: 20px;
+}

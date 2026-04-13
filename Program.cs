@@ -67,6 +67,47 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path.StartsWithSegments("/Admin", StringComparison.OrdinalIgnoreCase))
+    {
+        var userId = context.Request.Cookies["user_session"];
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            context.Response.Redirect("/");
+            return;
+        }
+
+        var connectionString = app.Configuration.GetConnectionString("DefaultConnection");
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            context.Response.Redirect("/");
+            return;
+        }
+
+        await using var connection = new NpgsqlConnection(connectionString);
+        await connection.OpenAsync();
+
+        await using var command = new NpgsqlCommand(
+            @"SELECT role
+              FROM users
+              WHERE id = @id
+                AND status = TRUE
+              LIMIT 1;",
+            connection);
+        command.Parameters.AddWithValue("id", userId);
+
+        var role = await command.ExecuteScalarAsync();
+        if (role is null || !string.Equals(role.ToString(), "Admin", StringComparison.OrdinalIgnoreCase))
+        {
+            context.Response.Redirect("/");
+            return;
+        }
+    }
+
+    await next();
+});
+
 app.MapPost("/api/login", async (HttpContext context) =>
 {
     var connectionString = app.Configuration.GetConnectionString("DefaultConnection");

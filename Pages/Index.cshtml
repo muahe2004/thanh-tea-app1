@@ -878,6 +878,9 @@
                     renderAuthState();
                     closeUserDropdown();
                     hideLoginModal();
+                    if ((data.user?.role || '').toLowerCase() === 'admin') {
+                        window.location.href = '/Admin';
+                    }
                     return;
                 }
 

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        * { font-family: 'Poppins', sans-serif !important; }
+        body { background: #f5f7fb; }
+        .admin-avatar-btn {
+            width: 44px;
+            height: 44px;
+            border: 0;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #1d4ed8, #f97316);
+            color: #fff;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,.18);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark px-4">
+        <a class="navbar-brand fw-bold" asp-page="/Index">MathMaster Admin</a>
+        <div class="d-flex align-items-center gap-3">
+            <div class="text-white-50 small d-none d-md-block">Admin Area</div>
+            <div class="position-relative">
+                <button id="admin-avatar-button" class="admin-avatar-btn" type="button">A</button>
+                <div id="admin-dropdown" class="d-none position-absolute end-0 mt-2 bg-white rounded-4 shadow-lg border overflow-hidden" style="min-width: 220px; z-index: 1000;">
+                    <div class="px-3 py-3 border-bottom bg-light">
+                        <div id="admin-name" class="fw-semibold text-dark">Admin</div>
+                        <div class="text-muted small">Logged in</div>
+                    </div>
+                    <button id="admin-logout-btn" class="btn btn-link text-danger text-start w-100 px-3 py-3 text-decoration-none">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4">
+        @RenderBody()
+    </main>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function () {
+            function getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+                return null;
+            }
+
+            function syncAdminAvatar() {
+                const avatarButton = document.getElementById('admin-avatar-button');
+                const adminName = document.getElementById('admin-name');
+                const stored = localStorage.getItem('user_information');
+                let user = null;
+
+                if (stored) {
+                    try {
+                        user = JSON.parse(stored);
+                    } catch {
+                        user = null;
+                    }
+                }
+
+                if (!user && !getCookie('user_session')) {
+                    window.location.href = '/';
+                    return;
+                }
+
+                const fullName = (user && (user.fullName || user.full_name)) || 'Admin';
+                const initial = fullName.trim().charAt(0).toUpperCase() || 'A';
+                avatarButton.textContent = initial;
+                if (adminName) adminName.textContent = fullName;
+            }
+
+            function toggleDropdown() {
+                const dropdown = document.getElementById('admin-dropdown');
+                dropdown.classList.toggle('d-none');
+            }
+
+            function closeDropdown() {
+                const dropdown = document.getElementById('admin-dropdown');
+                dropdown.classList.add('d-none');
+            }
+
+            function logoutAdmin() {
+                localStorage.removeItem('user_information');
+                document.cookie = 'user_session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+                window.location.href = '/';
+            }
+
+            document.addEventListener('DOMContentLoaded', syncAdminAvatar);
+            document.getElementById('admin-avatar-button')?.addEventListener('click', toggleDropdown);
+            document.getElementById('admin-logout-btn')?.addEventListener('click', logoutAdmin);
+            document.addEventListener('click', function (event) {
+                const wrapper = document.getElementById('admin-avatar-button')?.parentElement;
+                const dropdown = document.getElementById('admin-dropdown');
+                if (!wrapper || !dropdown) return;
+                if (!wrapper.contains(event.target)) closeDropdown();
+            });
+        })();
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

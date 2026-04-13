@@ -1,0 +1,37 @@
+# Build output
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# IDE folders
+.vs/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# ASP.NET Core local settings
+appsettings.Development.json
+secrets.json
+
+# Logs
+*.log
+
+# NuGet
+packages/
+*.nupkg
+
+# Test/coverage artifacts
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# Publish output
+publish/

@@ -3,10 +3,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 builder.Services.AddRazorPages();
-
 var app = builder.Build();
 
 var connectionString = app.Configuration.GetConnectionString("DefaultConnection");
@@ -30,8 +27,8 @@ else
     Console.WriteLine("DefaultConnection is missing.");
 }
 
+// NẾU DÙNG MYSQL THÌ HÃY SỬ DỤNG PHẦN DƯỚI NÀY =))
 /*
-// MySQL
 // using MySqlConnector;
 //
 // var connectionString = app.Configuration.GetConnectionString("DefaultConnection");

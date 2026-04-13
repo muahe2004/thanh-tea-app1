@@ -8,7 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Npgsql" Version="8.0.4" />
-    <!-- <PackageReference Include="MySqlConnector" Version="2.4.0" /> -->
+    <!-- // NẾU DÙNG MYSQL THÌ HÃY SỬ DỤNG PHẦN DƯỚI NÀY thay vì dòng trên (dòng 10) =)) -->
+    <!-- <PackageReference Include="MySqlConnector" Version="2.4.0" /> --> 
   </ItemGroup>
 
   <ItemGroup>

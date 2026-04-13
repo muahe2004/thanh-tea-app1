@@ -98,10 +98,22 @@
                     <a href="#contact" class="nav-link text-gray-700 hover:text-blue-700">Liên hệ</a>
             </nav>
             <div class="flex items-center gap-4">
-                <button onclick="showLoginModal()" class="px-6 py-2.5 text-sm font-semibold text-blue-700 border-2 border-blue-700 rounded-3xl hover:bg-blue-50 transition">
+                <button id="login-button" onclick="showLoginModal()" class="px-6 py-2.5 text-sm font-semibold text-blue-700 border-2 border-blue-700 rounded-3xl hover:bg-blue-50 transition">
                     Đăng nhập
                 </button>
-                <button onclick="window.location.href='#courses'" class="px-8 py-2.5 bg-gradient-to-r from-blue-700 to-orange-500 text-white text-sm font-semibold rounded-3xl hover:shadow-xl transition shadow-md">
+                <div id="user-menu-wrapper" class="relative hidden">
+                    <button id="user-avatar-button" class="w-12 h-12 rounded-full bg-blue-700 text-white text-lg font-bold items-center justify-center shadow-md" type="button"></button>
+                    <div id="user-dropdown" class="hidden absolute right-0 mt-3 w-52 rounded-2xl bg-white shadow-2xl border border-gray-100 overflow-hidden z-50">
+                        <div class="px-4 py-3 border-b bg-gray-50">
+                            <div id="dropdown-user-name" class="text-sm font-semibold text-gray-900 truncate">User</div>
+                            <div class="text-xs text-gray-500">Đã đăng nhập</div>
+                        </div>
+                        <button onclick="logoutUser()" class="w-full text-left px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+                <button onclick="showRegisterModal()" class="px-8 py-2.5 bg-gradient-to-r from-blue-700 to-orange-500 text-white text-sm font-semibold rounded-3xl hover:shadow-xl transition shadow-md">
                     Đăng ký học ngay
                 </button>
                 <button id="mobile-menu-btn" class="md:hidden text-3xl text-blue-700">
@@ -652,17 +664,48 @@
                     <div class="text-2xl font-bold text-blue-700">Đăng nhập</div>
                     <button onclick="hideLoginModal()" class="text-3xl text-gray-400 hover:text-gray-600">×</button>
                 </div>
-                <input type="email" placeholder="Email hoặc số điện thoại" class="w-full px-6 py-5 rounded-3xl border mb-5 focus:outline-none focus:border-blue-600">
-                <input type="password" placeholder="Mật khẩu" class="w-full px-6 py-5 rounded-3xl border mb-8 focus:outline-none focus:border-blue-600">
+                <select id="login-role" class="auth-input w-full px-6 py-5 rounded-3xl border mb-5 focus:outline-none focus:border-blue-600 bg-white">
+                    <option value="">Select role</option>
+                    <option value="admin">Admin</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="student">Student</option>
+                </select>
+                <input id="login-email" type="email" placeholder="Email hoặc số điện thoại" class="auth-input w-full px-6 py-5 rounded-3xl border mb-5 focus:outline-none focus:border-blue-600">
+                <input id="login-password" type="password" placeholder="Mật khẩu" class="auth-input w-full px-6 py-5 rounded-3xl border mb-8 focus:outline-none focus:border-blue-600">
                 <button onclick="fakeLogin()" class="w-full py-5 bg-blue-700 text-white font-bold text-lg rounded-3xl">
                     Đăng nhập
                 </button>
                 <div class="text-center text-sm text-gray-500 mt-6">
                     Chưa có tài khoản?
-                    <span onclick="hideLoginModal();alert('Chức năng đăng ký đang phát triển...')" class="text-blue-600 font-medium cursor-pointer">Đăng ký ngay</span>
+                    <span onclick="hideLoginModal();showRegisterModal()" class="text-blue-600 font-medium cursor-pointer">Đăng ký ngay</span>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- REGISTER MODAL -->
+    <div id="register-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[999]">
+        <div class="bg-white rounded-3xl max-w-md w-full mx-4 overflow-hidden">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-8">
+                    <div class="text-2xl font-bold text-blue-700">Đăng ký</div>
+                    <button onclick="hideRegisterModal()" class="text-3xl text-gray-400 hover:text-gray-600">×</button>
+                </div>
+                <input id="register-full-name" type="text" placeholder="Full name" class="auth-input w-full px-6 py-5 rounded-3xl border mb-5 focus:outline-none focus:border-blue-600">
+                <input id="register-email" type="email" placeholder="Email" class="auth-input w-full px-6 py-5 rounded-3xl border mb-5 focus:outline-none focus:border-blue-600">
+                <input id="register-phone-number" type="text" placeholder="Phone number" class="auth-input w-full px-6 py-5 rounded-3xl border mb-5 focus:outline-none focus:border-blue-600">
+                <input id="register-password" type="password" placeholder="Password" class="auth-input w-full px-6 py-5 rounded-3xl border mb-5 focus:outline-none focus:border-blue-600">
+                <input id="register-confirm-password" type="password" placeholder="Confirm password" class="auth-input w-full px-6 py-5 rounded-3xl border mb-8 focus:outline-none focus:border-blue-600">
+                <button onclick="submitRegister()" class="w-full py-5 bg-blue-700 text-white font-bold text-lg rounded-3xl">
+                    Đăng ký
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="fixed top-16 right-6 z-[1000] hidden max-w-sm px-5 py-4 rounded-2xl shadow-2xl text-sm font-medium text-white transition-all duration-300 translate-y-[-12px] opacity-0">
+        <div id="toast-message"></div>
     </div>
 
     <script>
@@ -681,6 +724,109 @@
         }
 
         // Login modal
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+
+        function renderAuthState() {
+            const loginButton = document.getElementById('login-button');
+            const avatarButton = document.getElementById('user-avatar-button');
+            const userMenuWrapper = document.getElementById('user-menu-wrapper');
+            const dropdownUserName = document.getElementById('dropdown-user-name');
+            if (!loginButton || !avatarButton || !userMenuWrapper) return;
+
+            let user = null;
+            const stored = localStorage.getItem('user_information');
+            if (stored) {
+                try {
+                    user = JSON.parse(stored);
+                } catch {
+                    user = null;
+                }
+            }
+
+            if (!user && getCookie('user_session')) {
+                user = { full_name: 'User' };
+            }
+
+            if (user) {
+                const fullName = user.fullName || user.full_name || 'User';
+                const initial = fullName.trim().charAt(0).toUpperCase() || 'U';
+                avatarButton.textContent = initial;
+                if (dropdownUserName) dropdownUserName.textContent = fullName;
+                loginButton.classList.add('hidden');
+                userMenuWrapper.classList.remove('hidden');
+                avatarButton.classList.add('flex');
+                avatarButton.title = fullName;
+            } else {
+                loginButton.classList.remove('hidden');
+                userMenuWrapper.classList.add('hidden');
+                avatarButton.classList.remove('flex');
+            }
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            if (!toast || !toastMessage) return;
+
+            const styles = {
+                success: 'bg-emerald-600',
+                error: 'bg-red-600',
+                info: 'bg-blue-700'
+            };
+
+            toast.className = `fixed top-6 right-6 z-[1000] max-w-sm px-5 py-4 rounded-2xl shadow-2xl text-sm font-medium text-white transition-all duration-300 ${styles[type] || styles.info}`;
+            toastMessage.textContent = message;
+            toast.classList.remove('hidden', 'opacity-0', 'translate-y-[-12px]');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            clearTimeout(window.__toastTimer);
+            window.__toastTimer = setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-[-12px]');
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                setTimeout(() => toast.classList.add('hidden'), 200);
+            }, 2500);
+        }
+
+        function clearAuthInputError(input) {
+            if (!input) return;
+            input.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        }
+
+        function markAuthInputError(input) {
+            if (!input) return;
+            input.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+        }
+
+        function wireAuthInputReset() {
+            document.querySelectorAll('.auth-input').forEach(input => {
+                input.addEventListener('input', () => clearAuthInputError(input));
+                input.addEventListener('focus', () => clearAuthInputError(input));
+            });
+        }
+
+        function closeUserDropdown() {
+            const dropdown = document.getElementById('user-dropdown');
+            if (dropdown) dropdown.classList.add('hidden');
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('user-dropdown');
+            if (!dropdown) return;
+            dropdown.classList.toggle('hidden');
+        }
+
+        window.logoutUser = function() {
+            localStorage.removeItem('user_information');
+            document.cookie = 'user_session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+            closeUserDropdown();
+            renderAuthState();
+        };
+
         window.showLoginModal = function() {
             const modal = document.getElementById('login-modal');
             if (modal) modal.classList.replace('hidden', 'flex');
@@ -690,9 +836,153 @@
             if (modal) modal.classList.replace('flex', 'hidden');
         };
         window.fakeLogin = function() {
-            alert('Đăng nhập thành công! (Demo)');
-            hideLoginModal();
+            const roleInput = document.getElementById('login-role');
+            const emailInput = document.getElementById('login-email');
+            const passwordInput = document.getElementById('login-password');
+            const role = roleInput ? roleInput.value : '';
+            const email = emailInput ? emailInput.value : '';
+            const password = passwordInput ? passwordInput.value : '';
+
+            let hasError = false;
+            if (!role.trim()) {
+                markAuthInputError(roleInput);
+                hasError = true;
+            }
+            if (!email.trim()) {
+                markAuthInputError(emailInput);
+                hasError = true;
+            }
+            if (!password.trim()) {
+                markAuthInputError(passwordInput);
+                hasError = true;
+            }
+            if (hasError) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+
+            fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password, role })
+            })
+            .then(async response => {
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    if (data.user) {
+                        localStorage.setItem('user_information', JSON.stringify(data.user));
+                    }
+                    showToast('Login successful', 'success');
+                    renderAuthState();
+                    closeUserDropdown();
+                    hideLoginModal();
+                    return;
+                }
+
+                showToast(data.message || 'Login failed', 'error');
+            })
+            .catch(() => {
+                showToast('Login failed', 'error');
+            });
         };
+
+        window.showRegisterModal = function() {
+            const modal = document.getElementById('register-modal');
+            if (modal) modal.classList.replace('hidden', 'flex');
+        };
+
+        window.hideRegisterModal = function() {
+            const modal = document.getElementById('register-modal');
+            if (modal) modal.classList.replace('flex', 'hidden');
+        };
+
+        window.submitRegister = function() {
+            const fullNameInput = document.getElementById('register-full-name');
+            const emailInput = document.getElementById('register-email');
+            const phoneNumberInput = document.getElementById('register-phone-number');
+            const passwordInput = document.getElementById('register-password');
+            const confirmPasswordInput = document.getElementById('register-confirm-password');
+
+            const fullName = fullNameInput ? fullNameInput.value : '';
+            const email = emailInput ? emailInput.value : '';
+            const phoneNumber = phoneNumberInput ? phoneNumberInput.value : '';
+            const password = passwordInput ? passwordInput.value : '';
+            const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value : '';
+
+            let hasError = false;
+            if (!fullName.trim()) {
+                markAuthInputError(fullNameInput);
+                hasError = true;
+            }
+            if (!email.trim()) {
+                markAuthInputError(emailInput);
+                hasError = true;
+            }
+            if (!phoneNumber.trim()) {
+                markAuthInputError(phoneNumberInput);
+                hasError = true;
+            }
+            if (!password.trim()) {
+                markAuthInputError(passwordInput);
+                hasError = true;
+            }
+            if (!confirmPassword.trim()) {
+                markAuthInputError(confirmPasswordInput);
+                hasError = true;
+            }
+            if (password.trim() && confirmPassword.trim() && password !== confirmPassword) {
+                markAuthInputError(passwordInput);
+                markAuthInputError(confirmPasswordInput);
+                showToast('Passwords do not match', 'error');
+                return;
+            }
+            if (hasError) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+
+            fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ fullName, email, phoneNumber, password })
+            })
+            .then(async response => {
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    showToast('Register successful', 'success');
+                    hideRegisterModal();
+                    return;
+                }
+
+                showToast(data.message || 'Register failed', 'error');
+            })
+            .catch(() => {
+                showToast('Register failed', 'error');
+            });
+        };
+
+        document.addEventListener('click', function(event) {
+            const wrapper = document.getElementById('user-menu-wrapper');
+            const dropdown = document.getElementById('user-dropdown');
+            const avatarButton = document.getElementById('user-avatar-button');
+            if (!wrapper || !dropdown || !avatarButton) return;
+
+            if (wrapper.contains(event.target)) {
+                if (event.target === avatarButton) {
+                    toggleUserDropdown();
+                }
+                return;
+            }
+
+            closeUserDropdown();
+        });
+
+        document.addEventListener('DOMContentLoaded', renderAuthState);
+        document.addEventListener('DOMContentLoaded', wireAuthInputReset);
 
         // Contact form
         window.handleSubmit = function(e) {

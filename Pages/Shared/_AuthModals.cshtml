@@ -1,0 +1,48 @@
+<div id="login-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[999]">
+    <div class="bg-white rounded-3xl max-w-md w-full mx-4 overflow-hidden">
+        <div class="p-8">
+            <div class="flex justify-between items-center mb-8">
+                <div class="text-2xl font-bold text-blue-700">Đăng nhập</div>
+                <button onclick="hideLoginModal()" class="text-3xl text-gray-400 hover:text-gray-600">×</button>
+            </div>
+            <select id="login-role" class="auth-input w-full px-6 py-5 rounded-3xl border mb-5 focus:outline-none focus:border-blue-600 bg-white">
+                <option value="">Select role</option>
+                <option value="admin">Admin</option>
+                <option value="teacher">Teacher</option>
+                <option value="student">Student</option>
+            </select>
+            <input id="login-email" type="email" placeholder="Email hoặc số điện thoại" class="auth-input w-full px-6 py-5 rounded-3xl border mb-5 focus:outline-none focus:border-blue-600">
+            <input id="login-password" type="password" placeholder="Mật khẩu" class="auth-input w-full px-6 py-5 rounded-3xl border mb-8 focus:outline-none focus:border-blue-600">
+            <button onclick="fakeLogin()" class="w-full py-5 bg-blue-700 text-white font-bold text-lg rounded-3xl">
+                Đăng nhập
+            </button>
+            <div class="text-center text-sm text-gray-500 mt-6">
+                Chưa có tài khoản?
+                <span onclick="hideLoginModal();showRegisterModal()" class="text-blue-600 font-medium cursor-pointer">Đăng ký ngay</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="register-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[999]">
+    <div class="bg-white rounded-3xl max-w-md w-full mx-4 overflow-hidden">
+        <div class="p-8">
+            <div class="flex justify-between items-center mb-8">
+                <div class="text-2xl font-bold text-blue-700">Đăng ký</div>
+                <button onclick="hideRegisterModal()" class="text-3xl text-gray-400 hover:text-gray-600">×</button>
+            </div>
+            <input id="register-full-name" type="text" placeholder="Full name" class="auth-input w-full px-6 py-5 rounded-3xl border mb-5 focus:outline-none focus:border-blue-600">
+            <input id="register-email" type="email" placeholder="Email" class="auth-input w-full px-6 py-5 rounded-3xl border mb-5 focus:outline-none focus:border-blue-600">
+            <input id="register-phone-number" type="text" placeholder="Phone number" class="auth-input w-full px-6 py-5 rounded-3xl border mb-5 focus:outline-none focus:border-blue-600">
+            <input id="register-password" type="password" placeholder="Password" class="auth-input w-full px-6 py-5 rounded-3xl border mb-5 focus:outline-none focus:border-blue-600">
+            <input id="register-confirm-password" type="password" placeholder="Confirm password" class="auth-input w-full px-6 py-5 rounded-3xl border mb-8 focus:outline-none focus:border-blue-600">
+            <button onclick="submitRegister()" class="w-full py-5 bg-blue-700 text-white font-bold text-lg rounded-3xl">
+                Đăng ký
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="fixed top-16 right-6 z-[1000] hidden max-w-sm px-5 py-4 rounded-2xl shadow-2xl text-sm font-medium text-white transition-all duration-300 translate-y-[-12px] opacity-0">
+    <div id="toast-message"></div>
+</div>
